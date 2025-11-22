@@ -2,6 +2,7 @@ package com.vegi.simplemerchantservice.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity

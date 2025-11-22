@@ -1,5 +1,6 @@
 package com.vegi.simplemerchantservice.dto;
 
+
 import lombok.*;
 
 @Getter

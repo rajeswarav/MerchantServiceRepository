@@ -16,4 +16,5 @@ public class MerchantResponse {
     private String status;
     private Double currentBalance;
     private String currency;
+
 }

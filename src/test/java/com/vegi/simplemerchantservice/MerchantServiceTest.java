@@ -3,19 +3,23 @@ package com.vegi.simplemerchantservice;
 
 import com.vegi.simplemerchantservice.dto.MerchantResponse;
 import com.vegi.simplemerchantservice.exception.MerchantNotFoundException;
-import com.vegi.simplemerchantservice.model.*;
-import com.vegi.simplemerchantservice.repository.*;
-
+import com.vegi.simplemerchantservice.model.Merchant;
+import com.vegi.simplemerchantservice.model.MerchantAccount;
+import com.vegi.simplemerchantservice.model.MerchantStatus;
+import com.vegi.simplemerchantservice.repository.MerchantAccountRepository;
+import com.vegi.simplemerchantservice.repository.MerchantCreditLogRepository;
+import com.vegi.simplemerchantservice.repository.MerchantRepository;
 import com.vegi.simplemerchantservice.service.MerchantService;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 public class MerchantServiceTest {
 
