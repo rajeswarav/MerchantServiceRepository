@@ -6,6 +6,7 @@ import com.vegi.simplemerchantservice.dto.MerchantCreateRequest;
 import com.vegi.simplemerchantservice.dto.MerchantCreditRequest;
 import com.vegi.simplemerchantservice.dto.MerchantCreditResponse;
 import com.vegi.simplemerchantservice.dto.MerchantResponse;
+import com.vegi.simplemerchantservice.exception.MerchantNotFoundException;
 import com.vegi.simplemerchantservice.model.*;
 import com.vegi.simplemerchantservice.repository.MerchantAccountRepository;
 import com.vegi.simplemerchantservice.repository.MerchantCreditLogRepository;
@@ -32,10 +33,19 @@ public class MerchantService {
 
     public MerchantResponse getMerchantDetails(String merchantId) {
 
+        log.info("Start Merchant details calling Mechant Service:"+merchantId);
         Merchant merchant = merchantRepository.findById(merchantId)
-                .orElseThrow(() -> new RuntimeException("Merchant not found: " + merchantId));
+                .orElseThrow(() ->
+                        new MerchantNotFoundException("Merchant not found: " + merchantId));
 
         log.info("Merchant details found: " + merchant);
+
+
+        MerchantAccount account = merchantAccountRepository
+                .findByMerchantId(merchant.getMerchantId())
+                .orElseThrow(() -> new RuntimeException("Merchant account not found"));
+
+        log.info("End of  Merchant details calling Mechant Service:"+merchantId);
 
         return MerchantResponse.builder()
                 .merchantId(merchant.getMerchantId())
@@ -43,12 +53,14 @@ public class MerchantService {
                 .category(merchant.getCategory())
                 .currency(merchant.getCurrency())
                 .status(merchant.getStatus().name())
-                .currentBalance(0.0)  // you can populate from merchant_account table
+                .currentBalance(account.getCurrentBalance())  // you can populate from merchant_account table
                 .build();
+
+
     }
 
     public MerchantResponse createMerchant(MerchantCreateRequest request) {
-
+        log.info("Start Merchant create calling Mechant Service:"+request.getMerchantId());
         // 1. Validate: merchant already exists
         if (merchantRepository.existsById(request.getMerchantId())) {
             throw new RuntimeException("Merchant already exists with ID: " + request.getMerchantId());
@@ -69,6 +81,7 @@ public class MerchantService {
         merchantRepository.save(merchant);
 
         // 4. Build response object
+        log.info("End  Merchant create calling Mechant Service:"+request.getMerchantId());
         return MerchantResponse.builder()
                 .merchantId(merchant.getMerchantId())
                 .merchantName(merchant.getMerchantName())
@@ -77,11 +90,12 @@ public class MerchantService {
                 .currency(merchant.getCurrency())
                 .currentBalance(0.0)  // this will be fetched from merchant_account table later
                 .build();
+
     }
 
 
     public MerchantCreditResponse creditMerchantAccount(MerchantCreditRequest request) {
-log.info("Merchant service start.....");
+        log.info("Start Merchant credit calling Mechant Service:"+request.getMerchantId());
         // 1. Validate merchant exists
         Merchant merchant = merchantRepository.findById(request.getMerchantId())
                 .orElseThrow(() -> new RuntimeException("Merchant not found: " + request.getMerchantId()));
@@ -137,6 +151,7 @@ log.info("Merchant service start.....");
                 .build();
 
         merchantCreditLogRepository.save(log);
+
 
         // 7. Return Success
         return MerchantCreditResponse.builder()

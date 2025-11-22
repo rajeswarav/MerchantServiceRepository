@@ -8,9 +8,12 @@ import com.vegi.simplemerchantservice.dto.MerchantCreateRequest;
 import com.vegi.simplemerchantservice.service.MerchantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,9 +29,14 @@ public class MerchantController {
   @Operation(summary = "Get Merchant Details",
             description = "Returns merchant basic information and current balance")
     @GetMapping("/{merchantId}")
-    public MerchantResponse getMerchantDetails(@PathVariable String merchantId) {
+    public MerchantResponse getMerchantDetails(@PathVariable @NotBlank(message = "merchantId is required") String merchantId) {
+    log.info("Merchant details request received");
+     //validate merchantId
+      if(merchantId == null) {
+          new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      }
 
-     log.info("Cotroller calling Mechant Service:"+merchantId);
+      log.info("Cotroller calling Mechant Service:"+merchantId);
       return merchantService.getMerchantDetails(merchantId);
     }
 
