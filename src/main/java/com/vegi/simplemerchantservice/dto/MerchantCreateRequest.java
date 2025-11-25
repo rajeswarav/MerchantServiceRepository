@@ -3,9 +3,8 @@ package com.vegi.simplemerchantservice.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
+
+@Data
 @AllArgsConstructor
 @Builder
 public class MerchantCreateRequest {
