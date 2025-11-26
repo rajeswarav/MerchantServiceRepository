@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     # Use 'self-hosted' label if your runner is registered with this label
-    runs-on: [ self-hosted, windows ] 
+    runs-on: windows-latest 
 
     steps:
     - uses: actions/checkout@v4
