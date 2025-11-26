@@ -21,7 +21,6 @@ public class MerchantController {
 
     private final MerchantService merchantService;
 
-    //adding logger to log the info new change
     Logger log = LoggerFactory.getLogger(MerchantController.class);
 
     @Operation(summary = "Get Merchant Details",
